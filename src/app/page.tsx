@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { onCtrlEnter, useMacWinKeyboardShortcut } from '@/lib/keyboard';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Search } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -59,6 +60,13 @@ const emojiData: Emoji[] = [
   { emoji: '🙃', description: 'Upside-Down Face', category: 'smileys', aliases: ['upside_down_face'] },
   { emoji: '😉', description: 'Winking Face', category: 'smileys', aliases: ['wink'] },
   { emoji: '😊', description: 'Smiling Face with Smiling Eyes', category: 'smileys', aliases: ['blush'] },
+  { emoji: '😇', description: 'Smiling Face with Halo', category: 'smileys', aliases: ['angel'] },
+
+  { emoji: '🧠', description: 'Brain', category: 'smileys', aliases: ['brain'] },
+  { emoji: '🐒', description: 'Monkey', category: 'smileys', aliases: ['monkey'] },
+  { emoji: '🙈', description: 'See No Evil', category: 'smileys', aliases: ['see_no_evil'] },
+  { emoji: '🙉', description: 'Hear No Evil', category: 'smileys', aliases: ['hear_no_evil'] },
+  { emoji: '🙊', description: 'Speak No Evil', category: 'smileys', aliases: ['speak_no_evil'] },
 
   { emoji: '👋', description: 'Waving Hand', category: 'people', aliases: ['wave'] },
   { emoji: '🤚', description: 'Raised Back of Hand', category: 'people', aliases: ['raised_back_of_hand'] },
@@ -133,7 +141,7 @@ const useItemsPerRow = () => {
 
 export default function EmojiBrowser() {
   const [searchQuery, setSearchQuery] = useState('');
-  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+  const debouncedSearchQuery = useDebounce(searchQuery, 150);
   const [activeCategory, setActiveCategory] = useState('all');
   const [copiedEmoji, setCopiedEmoji] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -209,14 +217,19 @@ export default function EmojiBrowser() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="relative mb-6">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" />
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-5" />
         <Input
           ref={searchInputRef}
           type="text"
           placeholder="Search emojis by name or keyword... (CMD/CTRL+K)"
           className="pl-10"
           value={searchQuery}
+          onKeyDown={onCtrlEnter(() => {
+            if (filteredEmojis.length > 0) {
+              copyToClipboard(filteredEmojis[0].emoji);
+            }
+          })}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
         {searchQuery && (
@@ -230,8 +243,11 @@ export default function EmojiBrowser() {
           </Button>
         )}
       </div>
+      <div className="ml-1  mt-0.5 text-xs text-muted-foreground">
+        {useMacWinKeyboardShortcut('Enter')} to copy first emoji
+      </div>
 
-      <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory}>
+      <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mt-4">
         <TabsList className="mb-4 flex overflow-x-auto hide-scrollbar">
           {categories.map((category) => (
             <TabsTrigger key={category.id} value={category.id} className="whitespace-nowrap">
@@ -266,7 +282,7 @@ export default function EmojiBrowser() {
                   <Button
                     key={emoji.emoji}
                     variant="ghost"
-                    className="flex-1 text-2xl hover:bg-accent hover:text-accent-foreground"
+                    className="flex-1 text-2xl hover:bg-accent hover:text-accent-foreground cursor-pointer"
                     onClick={() => copyToClipboard(emoji.emoji)}
                   >
                     {emoji.emoji}
