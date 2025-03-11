@@ -174,10 +174,6 @@ export default function EmojiBrowser() {
         e.preventDefault();
         searchInputRef.current?.focus();
       }
-      if (e.ctrlKey && e.key === 'c' && filteredEmojis.length > 0) {
-        e.preventDefault();
-        copyToClipboard(filteredEmojis[0].emoji);
-      }
     };
 
     if (searchInputRef.current) {
@@ -222,7 +218,7 @@ export default function EmojiBrowser() {
         <Input
           ref={searchInputRef}
           type="text"
-          placeholder="Search emojis by name or keyword... (CMD/CTRL+K)"
+          placeholder={`Search emojis by name or keyword..`}
           className="pl-10"
           value={searchQuery}
           onKeyDown={onCtrlEnter(() => {
@@ -244,20 +240,21 @@ export default function EmojiBrowser() {
         )}
       </div>
       <div className="ml-1  mt-0.5 text-xs text-muted-foreground">
-        {useMacWinKeyboardShortcut('Enter')} to copy first emoji
+        {!searchQuery && `Press ${useMacWinKeyboardShortcut('+K')} to search`}
+        {searchQuery && `Press ${useMacWinKeyboardShortcut('+Enter')} to copy first emoji`}
       </div>
 
       <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mt-4">
-        <TabsList className="mb-4 flex overflow-x-auto hide-scrollbar">
+        <TabsList className="mb-4 hidden lg:flex">
           {categories.map((category) => (
-            <TabsTrigger key={category.id} value={category.id} className="whitespace-nowrap">
+            <TabsTrigger key={category.id} value={category.id} className="cursor-pointer">
               <span className="mr-2">{category.icon}</span>
               <span>{category.name}</span>
             </TabsTrigger>
           ))}
         </TabsList>
 
-        <div ref={parentRef} className="h-[calc(100vh-220px)] overflow-auto">
+        <div ref={parentRef}>
           <div
             style={{
               height: `${rowVirtualizer.getTotalSize()}px`,
