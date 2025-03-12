@@ -87,6 +87,9 @@ const emojiData: Emoji[] = [
   { emoji: '🍊', description: 'Tangerine', category: 'food', aliases: ['tangerine', 'orange'] },
   { emoji: '🍋', description: 'Lemon', category: 'food', aliases: ['lemon'] },
   { emoji: '🍌', description: 'Banana', category: 'food', aliases: ['banana'] },
+  { emoji: '☕', description: 'Coffee', category: 'food', aliases: ['coffee'] },
+  { emoji: '🍵', description: 'Tea', category: 'food', aliases: ['tea'] },
+  { emoji: '🫐', description: 'Coffee Bean', category: 'food', aliases: ['coffee_bean'] },
 
   { emoji: '🚗', description: 'Automobile', category: 'travel', aliases: ['car', 'red_car'] },
   { emoji: '🚕', description: 'Taxi', category: 'travel', aliases: ['taxi'] },
