@@ -75,11 +75,12 @@ const emojiData: Emoji[] = [
   { emoji: '👍', description: 'Thumbs Up', category: 'people', aliases: ['thumbsup', '+1'] },
   { emoji: '👎', description: 'Thumbs Down', category: 'people', aliases: ['thumbsdown', '-1'] },
 
-  { emoji: '🐶', description: 'Dog Face', category: 'animals', aliases: ['dog'] },
+  { emoji: '🐶', description: 'Dog Face', category: 'animals', aliases: ['dog', 'benji'] },
   { emoji: '🐱', description: 'Cat Face', category: 'animals', aliases: ['cat'] },
   { emoji: '🐭', description: 'Mouse Face', category: 'animals', aliases: ['mouse'] },
   { emoji: '🐹', description: 'Hamster Face', category: 'animals', aliases: ['hamster'] },
   { emoji: '🐰', description: 'Rabbit Face', category: 'animals', aliases: ['rabbit'] },
+  { emoji: '🐾', description: 'Paws', category: 'animals', aliases: ['paws'] },
 
   { emoji: '🍎', description: 'Red Apple', category: 'food', aliases: ['apple'] },
   { emoji: '🍐', description: 'Pear', category: 'food', aliases: ['pear'] },
