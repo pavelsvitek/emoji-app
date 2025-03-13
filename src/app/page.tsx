@@ -74,6 +74,8 @@ const emojiData: Emoji[] = [
   { emoji: '👌', description: 'OK Hand', category: 'people', aliases: ['ok_hand'] },
   { emoji: '👍', description: 'Thumbs Up', category: 'people', aliases: ['thumbsup', '+1'] },
   { emoji: '👎', description: 'Thumbs Down', category: 'people', aliases: ['thumbsdown', '-1'] },
+  { emoji: '👏', description: 'Clap', category: 'people', aliases: ['clap'] },
+  { emoji: '🙌', description: 'Raising Hand', category: 'people', aliases: ['raising_hand'] },
 
   { emoji: '🐶', description: 'Dog Face', category: 'animals', aliases: ['dog', 'benji'] },
   { emoji: '🐱', description: 'Cat Face', category: 'animals', aliases: ['cat'] },
