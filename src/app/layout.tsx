@@ -3,7 +3,7 @@ import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
-import React from 'react';
+import React, { Suspense } from 'react';
 import './globals.css';
 
 const geistSans = Geist({
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   description: 'Blazing-fast emoji picker by Pavel Svitek',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -30,13 +30,15 @@ export default function RootLayout({
     <html lang="en">
       <Analytics />
 
-      <NuqsAdapter>
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          {children}
+      <Suspense>
+        <NuqsAdapter>
+          <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            {children}
 
-          <Toaster />
-        </body>
-      </NuqsAdapter>
+            <Toaster />
+          </body>
+        </NuqsAdapter>
+      </Suspense>
     </html>
   );
 }
