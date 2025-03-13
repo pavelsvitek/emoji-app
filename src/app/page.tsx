@@ -1,11 +1,12 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { InputSmart } from '@/components/ui/input-smart';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { onCtrlEnter, useMacWinKeyboardShortcut } from '@/lib/keyboard';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { Search } from 'lucide-react';
+import { parseAsString, useQueryState } from 'nuqs';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -146,7 +147,8 @@ const useItemsPerRow = () => {
 };
 
 export default function EmojiBrowser() {
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useQueryState('q', parseAsString.withDefault(''));
   const debouncedSearchQuery = useDebounce(searchQuery, 150);
   const [activeCategory, setActiveCategory] = useState('all');
   const [copiedEmoji, setCopiedEmoji] = useState<string | null>(null);
@@ -221,8 +223,9 @@ export default function EmojiBrowser() {
     <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-5" />
-        <Input
+        <InputSmart
           ref={searchInputRef}
+          delay={150}
           type="text"
           placeholder={`Search emojis by name or keyword..`}
           className="pl-10"

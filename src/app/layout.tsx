@@ -2,6 +2,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import React from 'react';
 import './globals.css';
 
@@ -29,11 +30,13 @@ export default function RootLayout({
     <html lang="en">
       <Analytics />
 
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+      <NuqsAdapter>
+        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          {children}
 
-        <Toaster />
-      </body>
+          <Toaster />
+        </body>
+      </NuqsAdapter>
     </html>
   );
 }
