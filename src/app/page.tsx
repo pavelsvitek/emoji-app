@@ -53,9 +53,9 @@ const categories = [
 const emojiData: Emoji[] = [
   { emoji: '😀', description: 'Grinning Face', category: 'smileys', aliases: ['grinning', 'smile'] },
   { emoji: '😃', description: 'Grinning Face with Big Eyes', category: 'smileys', aliases: ['smiley'] },
-  { emoji: '😄', description: 'Grinning Face with Smiling Eyes', category: 'smileys', aliases: ['smile', 'laugh'] },
+  { emoji: '😄', description: 'Grinning Face with Smiling Eyes', category: 'smileys', aliases: ['smile', 'laugh', 'lol'] },
   { emoji: '😁', description: 'Beaming Face with Smiling Eyes', category: 'smileys', aliases: ['grin'] },
-  { emoji: '😆', description: 'Grinning Squinting Face', category: 'smileys', aliases: ['laughing', 'satisfied'] },
+  { emoji: '😆', description: 'Grinning Squinting Face', category: 'smileys', aliases: ['laughing', 'satisfied', 'lol'] },
   { emoji: '😅', description: 'Grinning Face with Sweat', category: 'smileys', aliases: ['sweat_smile'] },
   { emoji: '🙂', description: 'Slightly Smiling Face', category: 'smileys', aliases: ['slightly_smiling_face'] },
   { emoji: '🙃', description: 'Upside-Down Face', category: 'smileys', aliases: ['upside_down_face', 'upside_down', 'upside', 'silly'] },
@@ -69,9 +69,9 @@ const emojiData: Emoji[] = [
   { emoji: '🙈', description: 'See No Evil', category: 'smileys', aliases: ['see_no_evil'] },
   { emoji: '🙉', description: 'Hear No Evil', category: 'smileys', aliases: ['hear_no_evil'] },
   { emoji: '🙊', description: 'Speak No Evil', category: 'smileys', aliases: ['speak_no_evil'] },
-  { emoji: '😂', description: 'Face with Tears of Joy', category: 'smileys', aliases: ['joy', 'laugh'] },
+  { emoji: '😂', description: 'Face with Tears of Joy', category: 'smileys', aliases: ['joy', 'laugh', 'lol'] },
   { emoji: '😭', description: 'Loudly Crying Face', category: 'smileys', aliases: ['sob', 'cry'] },
-  { emoji: '🤣', description: 'Rolling on the Floor Laughing', category: 'smileys', aliases: ['rofl'] },
+  { emoji: '🤣', description: 'Rolling on the Floor Laughing', category: 'smileys', aliases: ['rofl', 'lol'] },
   { emoji: '😍', description: 'Smiling Face with Heart-Eyes', category: 'smileys', aliases: ['heart_eyes'] },
   { emoji: '🥳', description: 'Partying Face', category: 'smileys', aliases: ['party'] },
   { emoji: '😎', description: 'Smiling Face with Sunglasses', category: 'smileys', aliases: ['sunglasses'] },
@@ -227,6 +227,10 @@ export default function EmojiBrowser() {
     return filtered;
   }, [debouncedSearchQuery, activeCategory]);
 
+  const hasActiveSearch = debouncedSearchQuery.trim().length > 0;
+  const isSparseSearchResult =
+    hasActiveSearch && filteredEmojis.length > 0 && filteredEmojis.length < 5;
+
   // Focus search input on load and when CMD/CTRL+K is pressed
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -258,9 +262,9 @@ export default function EmojiBrowser() {
   const parentRef = useRef<HTMLDivElement>(null);
 
   const rowVirtualizer = useVirtualizer({
-    count: rows.length,
+    count: isSparseSearchResult ? 0 : rows.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => 56, // Reduced row height
+    estimateSize: () => 56,
     overscan: 5,
   });
 
@@ -309,39 +313,54 @@ export default function EmojiBrowser() {
         </TabsList>
 
         <div ref={parentRef}>
-          <div
-            style={{
-              height: `${rowVirtualizer.getTotalSize()}px`,
-              width: '100%',
-              position: 'relative',
-            }}
-          >
-            {rowVirtualizer.getVirtualItems().map((virtualRow) => (
-              <div
-                key={virtualRow.index}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: `${virtualRow.size}px`,
-                  transform: `translateY(${virtualRow.start}px)`,
-                }}
-                className="flex gap-2"
-              >
-                {rows[virtualRow.index].map((emoji) => (
-                  <Button
-                    key={emoji.emoji}
-                    variant="ghost"
-                    className="flex-1 text-2xl hover:bg-accent hover:text-accent-foreground cursor-pointer"
-                    onClick={() => copyToClipboard(emoji.emoji)}
-                  >
-                    {emoji.emoji}
-                  </Button>
-                ))}
-              </div>
-            ))}
-          </div>
+          {isSparseSearchResult ? (
+            <div className="flex flex-wrap items-center justify-center gap-6 py-8">
+              {filteredEmojis.map((emoji) => (
+                <Button
+                  key={emoji.emoji}
+                  variant="ghost"
+                  className="h-auto min-h-32 min-w-[min(100%,12rem)] shrink-0 px-8 py-10 text-7xl leading-none hover:bg-accent hover:text-accent-foreground cursor-pointer sm:text-8xl md:text-9xl md:min-h-40 md:px-12 md:py-14"
+                  onClick={() => copyToClipboard(emoji.emoji)}
+                >
+                  {emoji.emoji}
+                </Button>
+              ))}
+            </div>
+          ) : (
+            <div
+              style={{
+                height: `${rowVirtualizer.getTotalSize()}px`,
+                width: '100%',
+                position: 'relative',
+              }}
+            >
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => (
+                <div
+                  key={virtualRow.index}
+                  style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: `${virtualRow.size}px`,
+                    transform: `translateY(${virtualRow.start}px)`,
+                  }}
+                  className="flex gap-2"
+                >
+                  {rows[virtualRow.index].map((emoji) => (
+                    <Button
+                      key={emoji.emoji}
+                      variant="ghost"
+                      className="flex-1 text-2xl hover:bg-accent hover:text-accent-foreground cursor-pointer"
+                      onClick={() => copyToClipboard(emoji.emoji)}
+                    >
+                      {emoji.emoji}
+                    </Button>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </Tabs>
 
