@@ -140,7 +140,7 @@ const emojiData: Emoji[] = [
 
   { emoji: '💡', description: 'Light Bulb', category: 'objects', aliases: ['bulb'] },
   { emoji: '📱', description: 'Mobile Phone', category: 'objects', aliases: ['iphone'] },
-  { emoji: '💻', description: 'Laptop Computer', category: 'objects', aliases: ['computer'] },
+  { emoji: '💻', description: 'Laptop Computer', category: 'objects', aliases: ['computer', 'mac', 'pc', 'laptop', 'notebook'] },
   { emoji: '⌚', description: 'Watch', category: 'objects', aliases: ['watch'] },
   { emoji: '📷', description: 'Camera', category: 'objects', aliases: ['camera'] },
   { emoji: '✉️', description: 'Envelope', category: 'objects', aliases: ['email', 'mail'] },
@@ -236,7 +236,11 @@ export default function EmojiBrowser() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        searchInputRef.current?.focus();
+        const input = searchInputRef.current;
+        if (input) {
+          input.focus();
+          input.select();
+        }
       }
     };
 
