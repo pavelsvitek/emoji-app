@@ -201,9 +201,10 @@ export default function EmojiBrowser() {
   const [searchQuery, setSearchQuery] = useQueryState('q', parseAsString.withDefault(''));
   const debouncedSearchQuery = useDebounce(searchQuery, 150);
   const [activeCategory, setActiveCategory] = useState('all');
-  const [copiedEmoji, setCopiedEmoji] = useState<string | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const itemsPerRow = useItemsPerRow();
+  const searchKeyboardHint = useMacWinKeyboardShortcut('+K');
+  const copyFirstKeyboardHint = useMacWinKeyboardShortcut('+Enter');
 
   const filteredEmojis = useMemo(() => {
     let filtered = emojiData;
@@ -248,17 +249,10 @@ export default function EmojiBrowser() {
     return Array.from({ length: rowCount }, (_, i) => filteredEmojis.slice(i * itemsPerRow, (i + 1) * itemsPerRow));
   }, [filteredEmojis, itemsPerRow]);
 
-  const copyToClipboard = useCallback(
-    (emoji: string) => {
-      navigator.clipboard.writeText(emoji);
-      setCopiedEmoji(emoji);
-
-      toast(`Copied ${emoji} to clipboard!`);
-
-      setTimeout(() => setCopiedEmoji(null), 1000);
-    },
-    [toast],
-  );
+  const copyToClipboard = useCallback((emoji: string) => {
+    navigator.clipboard.writeText(emoji);
+    toast(`Copied ${emoji} to clipboard!`);
+  }, []);
 
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -299,8 +293,8 @@ export default function EmojiBrowser() {
         )}
       </div>
       <div className="ml-1  mt-0.5 text-xs text-muted-foreground">
-        {!searchQuery && `Press ${useMacWinKeyboardShortcut('+K')} to search`}
-        {searchQuery && `Press ${useMacWinKeyboardShortcut('+Enter')} to copy first emoji`}
+        {!searchQuery && `Press ${searchKeyboardHint} to search`}
+        {searchQuery && `Press ${copyFirstKeyboardHint} to copy first emoji`}
       </div>
 
       <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mt-4">

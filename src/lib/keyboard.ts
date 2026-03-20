@@ -1,4 +1,4 @@
-import { useEffect, useState, type KeyboardEvent } from 'react';
+import { useSyncExternalStore, type KeyboardEvent } from 'react';
 import { isMac } from './system';
 
 type KeyboardModifiers = {
@@ -106,11 +106,9 @@ export function getMacWinKeyboardShortcut(key: string) {
 
 export function useMacWinKeyboardShortcut(key: string) {
   'use client';
-  const [shortcut, setShortcut] = useState(`Ctrl+${key}`); // Default for SSR
-
-  useEffect(() => {
-    setShortcut(isMac() ? `⌘${key}` : `Ctrl+${key}`);
-  }, [key]);
-
-  return shortcut;
+  return useSyncExternalStore(
+    () => () => {},
+    () => (isMac() ? `⌘${key}` : `Ctrl+${key}`),
+    () => `Ctrl+${key}`,
+  );
 }
