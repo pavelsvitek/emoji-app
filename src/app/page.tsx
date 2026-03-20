@@ -176,17 +176,21 @@ const emojiData: Emoji[] = [
   { emoji: '🇨🇭', description: 'Flag: Switzerland', category: 'flags', aliases: ['switzerland', 'swiss', 'ch'] },
 ];
 
-// Calculate items per row based on viewport width
+// Items per row: conservative counts on small viewports; scale up on ultra-wide so cells stay usable
 const useItemsPerRow = () => {
   const [itemsPerRow, setItemsPerRow] = useState(8);
 
   useEffect(() => {
     const updateItemsPerRow = () => {
       const width = window.innerWidth;
-      if (width < 640) setItemsPerRow(4); // mobile
-      else if (width < 768) setItemsPerRow(6); // tablet
-      else if (width < 1024) setItemsPerRow(8); // laptop
-      else setItemsPerRow(10); // desktop
+      if (width < 640) setItemsPerRow(4);
+      else if (width < 768) setItemsPerRow(6);
+      else if (width < 1024) setItemsPerRow(8);
+      else if (width < 1280) setItemsPerRow(10);
+      else if (width < 1536) setItemsPerRow(12);
+      else if (width < 1920) setItemsPerRow(14);
+      else if (width < 2560) setItemsPerRow(16);
+      else setItemsPerRow(20);
     };
 
     updateItemsPerRow();
@@ -273,7 +277,7 @@ export default function EmojiBrowser() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="mx-auto w-full max-w-7xl px-4 py-8 min-[1280px]:max-w-[90rem] min-[1280px]:px-6 min-[1536px]:max-w-[112rem] min-[1920px]:max-w-[132rem] min-[1920px]:px-8 min-[2400px]:max-w-[min(152rem,calc(100vw-3rem))]">
       <div className="relative">
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground size-5" />
         <InputSmart
@@ -307,9 +311,13 @@ export default function EmojiBrowser() {
       </div>
 
       <Tabs defaultValue="all" value={activeCategory} onValueChange={setActiveCategory} className="mt-4">
-        <TabsList className="mb-4 hidden lg:flex">
+        <TabsList className="mb-4 hidden h-9 w-fit lg:flex min-[1920px]:h-auto min-[1920px]:min-h-9 min-[1920px]:w-full min-[1920px]:max-w-full min-[1920px]:flex-wrap min-[1920px]:justify-center">
           {categories.map((category) => (
-            <TabsTrigger key={category.id} value={category.id} className="cursor-pointer">
+            <TabsTrigger
+              key={category.id}
+              value={category.id}
+              className="cursor-pointer min-[1920px]:grow-0 min-[1920px]:basis-auto"
+            >
               <span className="mr-2">{category.icon}</span>
               <span>{category.name}</span>
             </TabsTrigger>
@@ -349,7 +357,7 @@ export default function EmojiBrowser() {
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start}px)`,
                   }}
-                  className="flex gap-2"
+                  className="flex gap-2 min-[1920px]:gap-2.5"
                 >
                   {rows[virtualRow.index].map((emoji) => (
                     <Button
