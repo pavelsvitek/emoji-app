@@ -62,6 +62,7 @@ const emojiData: Emoji[] = [
   { emoji: '😉', description: 'Winking Face', category: 'smileys', aliases: ['wink'] },
   { emoji: '😊', description: 'Smiling Face with Smiling Eyes', category: 'smileys', aliases: ['blush'] },
   { emoji: '😇', description: 'Smiling Face with Halo', category: 'smileys', aliases: ['angel'] },
+  { emoji: '🫥', description: 'Dotted Line Face', category: 'smileys', aliases: ['empty', 'dotted_line_face'] },
 
   { emoji: '🧠', description: 'Brain', category: 'smileys', aliases: ['brain'] },
   { emoji: '🐒', description: 'Monkey', category: 'smileys', aliases: ['monkey'] },
