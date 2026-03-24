@@ -76,6 +76,9 @@ const emojiData: Emoji[] = [
   { emoji: '🤦‍♂️', description: 'Man Facepalming', category: 'smileys', aliases: ['facepalm', 'face_palm', 'man_facepalming'] },
   { emoji: '🤦‍♀️', description: 'Woman Facepalming', category: 'smileys', aliases: ['facepalm', 'face_palm', 'woman_facepalming'] },
   { emoji: '😍', description: 'Smiling Face with Heart-Eyes', category: 'smileys', aliases: ['heart_eyes'] },
+  { emoji: '🤗', description: 'Hugging Face', category: 'smileys', aliases: ['hug', 'hugging', 'jazz_hands'] },
+  { emoji: '🫂', description: 'People Hugging', category: 'smileys', aliases: ['hug', 'hugging', 'people_hugging'] },
+  { emoji: '🫶', description: 'Heart Hands', category: 'smileys', aliases: ['heart_hands', 'finger_heart', 'heart_from_fingers', 'hands_heart'] },
   { emoji: '🥳', description: 'Partying Face', category: 'smileys', aliases: ['party'] },
   { emoji: '😎', description: 'Smiling Face with Sunglasses', category: 'smileys', aliases: ['sunglasses'] },
   { emoji: '💀', description: 'Skull', category: 'smileys', aliases: ['skull'] },
@@ -91,6 +94,7 @@ const emojiData: Emoji[] = [
   { emoji: '🙌', description: 'Raising Hand', category: 'people', aliases: ['raising_hand'] },
   { emoji: '🙏', description: 'Folded Hands', category: 'people', aliases: ['pray', 'thanks'] },
   { emoji: '✌️', description: 'Victory Hand', category: 'people', aliases: ['v', 'peace'] },
+  { emoji: '🫰', description: 'Hand with Index Finger and Thumb Crossed', category: 'people', aliases: ['finger_heart', 'heart_from_fingers', 'pinch', 'mini_heart'] },
   { emoji: '💪', description: 'Flexed Biceps', category: 'people', aliases: ['muscle'] },
   { emoji: '👀', description: 'Eyes', category: 'people', aliases: ['eyes'] },
 
